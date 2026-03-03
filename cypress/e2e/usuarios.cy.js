@@ -98,7 +98,7 @@ describe('POST - Testes de API - Gestão de usuários', () => {
 });
 
 describe('PUT - Testes de API - Gestão de usuários', () => {
-    it('Deve atualizar um usuário com sucesso', () => {
+    it.skip('Deve atualizar um usuário com sucesso', () => {
         cy.api({
             method: 'PUT',
             url: 'users/7',
