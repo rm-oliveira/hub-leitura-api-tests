@@ -1,0 +1,512 @@
+{
+  "info": {
+    "_postman_id": "75579c79-099d-4674-a055-c5e16e4bc131",
+    "name": "Hub de leitura",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "45544509",
+    "_collection_link": "https://go.postman.co/collection/45544509-75579c79-099d-4674-a055-c5e16e4bc131?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Gestão de usuários",
+      "item": [
+        {
+          "name": "Cadastrar usuário",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Deve validar se o status code é 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test(\"Deve validar a mensagem de sucesso\", function () {",
+                  "    pm.expect(pm.response.text()).to.include(\"Usuário criado com sucesso.\");",
+                  "});",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"{{$randomFullName}}\",\n  \"email\": \"{{$randomEmail}}\",\n  \"password\": \"senha123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}users",
+              "host": [
+                "{{baseUrl}}users"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Cadastrar usuário com email inválido",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Deve validar se o status code é 400\", function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});",
+                  "",
+                  "pm.test(\"Deve validar a mensagem de erro\", function () {",
+                  "    pm.expect(pm.response.text()).to.include(\"Formato de email inválido.\");",
+                  "});",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"{{usuario}}\",\n  \"email\": \"teste.teste.com\",\n  \"password\": \"{{senha}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}users",
+              "host": [
+                "{{baseUrl}}users"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Listar usuários",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Deve validar se o status code é 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Deve validar a propriedade users\", function () {",
+                  "    pm.expect(pm.response.json()).to.have.property('users')",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}users",
+              "host": [
+                "{{baseUrl}}users"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Listar usuário por ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Deve validar se o status code é 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Deve validar a propriedade id\", function () {",
+                  "    pm.expect(pm.response.json()).to.have.property('id')",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}users/9",
+              "host": [
+                "{{baseUrl}}users"
+              ],
+              "path": [
+                "9"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Alterar usuário",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code é 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Validar mensagem de sucesso\", function () {",
+                  "    pm.expect(pm.response.text()).to.include(\"Usuário atualizado com sucesso.\");",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Usuário Editado\",\n  \"email\": \"usuario.novo@email.com\",\n  \"password\": \"novaSenha123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}users/11",
+              "host": [
+                "{{baseUrl}}users"
+              ],
+              "path": [
+                "11"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Deletar usuário",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code é 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Deve validar mensagem de sucesso\", function () {",
+                  "    pm.expect(pm.response.text()).to.include(\"Usuário removido com sucesso.\");",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}users/11",
+              "host": [
+                "{{baseUrl}}users"
+              ],
+              "path": [
+                "11"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Autenticação",
+      "item": [
+        {
+          "name": "Login com usuário administrador",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const tokenGerado = pm.response.json().token",
+                  "pm.environment.set(\"token\", tokenGerado);"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@biblioteca.com\",\n  \"password\": \"admin123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}login",
+              "host": [
+                "{{baseUrl}}login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login com usuário padrão",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"Ian_Gerhold63@yahoo.com\",\n  \"password\": \"senha123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}login",
+              "host": [
+                "{{baseUrl}}login"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Reserva de livros",
+      "item": [
+        {
+          "name": "Criar reserva de livro",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "accept",
+                "value": "*/*"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bookId\": 3\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}reservations",
+              "host": [
+                "{{baseUrl}}reservations"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Catálogo de livros",
+      "item": [
+        {
+          "name": "Listar todos os livros disponíveis",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Deve validar se o status code é 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Deve validar a propridade book\", function () {",
+                  "    pm.expect(pm.response.json()).to.have.property('books')",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}books",
+              "host": [
+                "{{baseUrl}}books"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Listar livros usando filtro",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Deve validar se o status code é 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Deve validar se trouxe o livro Harry Potter\", function () {",
+                  "    pm.expect(pm.response.text()).to.include(\"Harry Potter e a Pedra Filosofal\");",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}books?category=Fantasia&available=true&limit=1&offset=0&orderBy=title&order=ASC",
+              "host": [
+                "{{baseUrl}}books"
+              ],
+              "query": [
+                {
+                  "key": "category",
+                  "value": "Fantasia"
+                },
+                {
+                  "key": "available",
+                  "value": "true"
+                },
+                {
+                  "key": "limit",
+                  "value": "1"
+                },
+                {
+                  "key": "offset",
+                  "value": "0"
+                },
+                {
+                  "key": "orderBy",
+                  "value": "title"
+                },
+                {
+                  "key": "order",
+                  "value": "ASC"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

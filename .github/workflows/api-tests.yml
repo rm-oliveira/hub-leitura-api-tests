@@ -1,0 +1,43 @@
+name: API Tests
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout dos testes
+        uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Clonar servidor API
+        run: git clone https://github.com/rm-oliveira/hub-de-leitura-api.git
+
+      - name: Instalar dependências da API
+        run: |
+          cd hub-de-leitura-api
+          npm install
+
+      - name: Subir API
+        run: |
+          cd hub-de-leitura-api
+          npm start &
+
+      - name: Instalar wait-on
+        run: npm install wait-on --no-save
+
+      - name: Aguardar API iniciar
+        run: npx wait-on http://localhost:3000/api-docs
+
+      - name: Instalar dependências dos testes
+        run: npm install
+
+      - name: Rodar testes de API
+        run: npm test
